@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PFAS: The Forever Chemical Crisis</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+ :root {
+  --ink: #1a2e0f;
+  --paper: #f8faf5;
+  --accent: #3b6d11;
+  --danger: #ba7517;
+  --muted: #5a7a45;
+  --rule: #c8dbb8;
+  --highlight: #eaf3de;
+ }
+
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ html { scroll-behavior: smooth; }
+
+ body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.7;
+  overflow-x: hidden;
+ }
+
+ /* ── NAV ── */
+ nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  backdrop-filter: blur(4px);
+ }
+ .nav-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+ }
+ .nav-links { display: flex; gap: 2rem; list-style: none; }
+ .nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+ }
+ .nav-links a:hover { color: var(--accent); }
+
+ /* ── HERO ── */
+ .hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 4rem;
+ }
+ .hero-text {
+  padding: 6rem 4rem 4rem 5rem;
+  display: flex; flex-direction: column; justify-content: center;
+  animation: fadeUp 1s ease both;
+ }
+ .hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+ }
+ .hero-eyebrow::before {
+  content: '';
+  display: block; width: 2rem; height: 1px;
+  background: var(--danger);
+ }
+ h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+ }
+ h1 em {
+  font-style: italic;
+  color: var(--accent);
+ }
+ .hero-sub {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 38ch;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+ }
+ .hero-cta {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--accent);
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+  width: fit-content;
+ }
+ .hero-cta:hover { background: var(--ink); transform: translateX(3px); }
+
+ .hero-visual {
+  background: #1a2e0f;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 4rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 1.2s ease both 0.3s;
+ }
+ .hero-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+   0deg, transparent, transparent 40px,
+   rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px
+  ),
+  repeating-linear-gradient(
+   90deg, transparent, transparent 40px,
+   rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 41px
+  );
+ }
+ .molecule {
+  position: relative; z-index: 1;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(5rem, 10vw, 9rem);
+  color: rgba(255,255,255,0.12);
+  line-height: 1;
+  text-align: center;
+  letter-spacing: -0.05em;
+ }
+ .stat-card {
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 1.5rem 2rem;
+  margin-top: 2rem;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  width: 100%;
+  max-width: 320px;
+ }
+ .stat-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3rem;
+  color: #97c459;
+  line-height: 1;
+  display: block;
+ }
+ .stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-top: 0.5rem;
+  display: block;
+ }
+
+ /* ── SECTIONS ── */
+ section { padding: 6rem 5rem; }
+ section:nth-child(even) { background: #fff; }
+
+ .section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+ }
+ .section-label::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--rule);
+  max-width: 4rem;
+ }
+
+ h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+ }
+
+ p { margin-bottom: 1.25rem; color: #2d3748; }
+
+ /* ── WHAT ARE PFAS ── */
+ .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+ }
+ .pfas-formula {
+  background: #1a2e0f;
+  color: var(--paper);
+  padding: 2rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 6rem;
+ }
+ .pfas-formula .formula-title {
+  color: rgba(242,237,230,0.4);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 0.75rem;
+ }
+ .pfas-formula .chem { color: #97c459; }
+ .pfas-formula .name { color: rgba(255,255,255,0.5); font-size: 0.65rem; }
+
+ /* ── HEALTH EFFECTS ── */
+ .effects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+ }
+ .effect-card {
+  border: 1px solid var(--rule);
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.2s, transform 0.2s;
+ }
+ .effect-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+ }
+ .effect-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+ }
+ .effect-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+ }
+ .effect-card p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+ }
+ .effect-card .severity {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 0.2rem 0.5rem;
+ }
+
+ /* ── TIMELINE ── */
+ .timeline {
+  position: relative;
+  padding-left: 3rem;
+  margin-top: 3rem;
+ }
+ .timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px; background: var(--rule);
+ }
+ .timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--rule);
+  animation: fadeUp 0.6s ease both;
+ }
+ .timeline-item:last-child { border-bottom: none; margin-bottom: 0; }
+ .timeline-item::before {
+  content: '';
+  position: absolute; left: -3rem; top: 0.5rem;
+  width: 0.6rem; height: 0.6rem;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateX(-50%);
+  margin-left: 0.5px;
+ }
+ .timeline-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+ }
+ .timeline-item h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+ }
+ .timeline-item p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 60ch;
+  margin: 0;
+ }
+ .timeline-item.danger-event::before { background: var(--danger); }
+ .timeline-item.danger-event .timeline-year { color: var(--danger); }
+
+ /* ── LOCAL CASE STUDY ── */
+ .case-study {
+  background: #1a2e0f !important;
+  color: var(--paper);
+ }
+ .case-study .section-label { color: #97c459; }
+ .case-study h2 { color: var(--paper); }
+ .case-study p { color: rgba(242,237,230,0.75); }
+ .case-study-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 5rem;
+  align-items: start;
+ }
+ .case-stat-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+ .case-stat {
+  border-left: 3px solid #97c459;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255,255,255,0.04);
+ }
+ .case-stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.5rem;
+  color: #97c459;
+  line-height: 1;
+  display: block;
+ }
+ .case-stat-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.4rem;
+  display: block;
+ }
+ .pullquote {
+  border-left: 3px solid var(--danger);
+  padding: 1.5rem 2rem;
+  background: rgba(192,57,43,0.08);
+  margin: 2rem 0;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(242,237,230,0.9) !important;
+ }
+
+ /* ── SOLUTIONS ── */
+ .solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+ }
+ .solution-card {
+  background: var(--highlight);
+  border-left: 3px solid var(--accent);
+  padding: 2rem;
+ }
+ .solution-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+ }
+ .solution-card p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--muted);
+ }
+
+ /* ── SOURCES ── */
+ .sources-list {
+  list-style: none;
+  margin-top: 2rem;
+ }
+ .sources-list li {
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  line-height: 1.6;
+ }
+ .sources-list li:first-child { border-top: 1px solid var(--rule); }
+ .source-tag {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.75rem;
+  vertical-align: middle;
+ }
+
+ /* ── FOOTER ── */
+ footer {
+  background: #1a2e0f;
+  color: rgba(242,237,230,0.4);
+  text-align: center;
+  padding: 3rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+ }
+ footer span { color: rgba(242,237,230,0.7); }
+
+ /* ── ANIMATIONS ── */
+ @keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to  { opacity: 1; transform: translateY(0); }
+ }
+ @keyframes fadeIn {
+  from { opacity: 0; }
+  to  { opacity: 1; }
+ }
+
+ /* ── RESPONSIVE ── */
+ @media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual { min-height: 40vh; }
+  .hero-text { padding: 5rem 2rem 3rem; }
+  section { padding: 4rem 2rem; }
+  .two-col, .case-study-inner, .solutions-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .effects-grid { grid-template-columns: 1fr; }
+  .pfas-formula { position: static; }
+ }
+</style>
+</head>
+<body>
+
+<nav>
+ <div class="nav-logo">PFAS // Forever Chemicals</div>
+ <ul class="nav-links">
+  <li><a href="#what">What Are PFAS</a></li>
+  <li><a href="#health">Health Effects</a></li>
+  <li><a href="#timeline">Timeline</a></li>
+  <li><a href="#local">Local Crisis</a></li>
+  <li><a href="#solutions">Solutions</a></li>
+  <li><a href="#sources">Sources</a></li>
+ </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+ <div class="hero-text">
+  <div class="hero-eyebrow">Environmental Crisis</div>
+  <h1>The Chemicals That <em>Never</em> Go Away</h1>
+  <p class="hero-sub">PFAS per- and polyfluoroalkyl substances have contaminated drinking water across the United States, threatening communities from New Milford, CT to every state in the nation.</p>
+  <a href="#what" class="hero-cta">Learn More →</a>
+ </div>
+ <div class="hero-visual">
+  <div class="molecule">C₈F₁₇</div>
+  <div class="stat-card">
+   <span class="stat-number">200M+</span>
+   <span class="stat-label">Americans with PFAS in their drinking water</span>
+  </div>
+  <div class="stat-card" style="margin-top:1rem;">
+   <span class="stat-number">4 ppt</span>
+   <span class="stat-label">EPA maximum contaminant level finalized 2024</span>
+  </div>
+ </div>
+</section>
+
+<!-- WHAT ARE PFAS -->
+<section id="what">
+ <div class="section-label">01 What Are PFAS</div>
+ <div class="two-col">
+  <div>
+   <h2>Man-Made Chemicals Built to Last Forever</h2>
+   <p>Per- and polyfluoroalkyl substances (PFAS) are a group of more than 12,000 synthetic chemicals that have been manufactured and used in industries and consumer products since the 1940s. Their defining feature is a strong carbon-fluorine bond one of the strongest in organic chemistry which makes them virtually indestructible in the natural environment.</p>
+   <p>PFAS repel water, oil, grease, and heat, making them useful in nonstick pots and pans, water-resistant clothing, food packaging, firefighting foam, and hundreds of industrial processes. But this same durability means they do not break down earning them the nickname <strong>"forever chemicals."</strong></p>
+   <p>They accumulate in soil, groundwater, surface water, wildlife, and the human body. Once they enter a water supply, they are extraordinarily difficult to remove. As of 2025, no single proven technology exists to fully eliminate PFAS contamination from a water system.</p>
+  </div>
+  <div class="pfas-formula">
+   <div class="formula-title">Common PFAS Compounds</div>
+   <div><span class="chem">C₈HF₁₅O₂</span><br><span class="name">PFOA Perfluorooctanoic acid</span></div>
+   <br>
+   <div><span class="chem">C₈HF₁₇O₃S</span><br><span class="name">PFOS Perfluorooctane sulfonic acid</span></div>
+   <br>
+   <div><span class="chem">C₄HF₉O₃S</span><br><span class="name">PFBS Perfluorobutane sulfonic acid</span></div>
+   <br>
+   <div><span class="chem">C₉HF₁₇O₃</span><br><span class="name">PFNA Perfluorononanoic acid</span></div>
+   <br>
+   <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem; color:rgba(255,255,255,0.4); font-size:0.65rem;">
+    12,000+ PFAS compounds identified.<br>
+    All share the C–F bond the strongest<br>
+    bond in organic chemistry.
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- HEALTH EFFECTS -->
+<section id="health">
+ <div class="section-label">02 Health Effects</div>
+ <h2>What PFAS Do to the Human Body</h2>
+ <p style="max-width:65ch;">PFAS accumulate in human tissue over time. Research has linked chronic exposure to a wide range of serious health outcomes, with children and pregnant women among the most vulnerable populations.</p>
+
+ <div class="effects-grid">
+  <div class="effect-card">
+   <span class="effect-icon">🧬</span>
+   <span class="severity">High Risk</span>
+   <h3>Cancer</h3>
+   <p>Exposure to PFOA and PFOS has been linked to increased risk of kidney, liver, and testicular cancers, supported by multiple systematic reviews.</p>
+  </div>
+  <div class="effect-card">
+   <span class="effect-icon">🛡️</span>
+   <span class="severity">Documented</span>
+   <h3>Immune Suppression</h3>
+   <p>Children with higher PFAS blood levels show measurably weaker antibody responses after routine vaccinations, leaving them more vulnerable to infectious disease.</p>
+  </div>
+  <div class="effect-card">
+   <span class="effect-icon">🧒</span>
+   <span class="severity">High Risk</span>
+   <h3>Developmental Effects</h3>
+   <p>Prenatal PFAS exposure is associated with low birth weight, altered thyroid hormone levels, and disrupted hormonal development in infants and children.</p>
+  </div>
+  <div class="effect-card">
+   <span class="effect-icon">❤️</span>
+   <span class="severity">Documented</span>
+   <h3>Cardiovascular Disease</h3>
+   <p>Studies have found associations between PFAS exposure and elevated cholesterol, hypertension, and increased risk of cardiovascular events.</p>
+  </div>
+  <div class="effect-card">
+   <span class="effect-icon">🔬</span>
+   <span class="severity">Emerging</span>
+   <h3>Liver Damage</h3>
+   <p>PFAS accumulate in liver tissue and have been associated with liver enzyme abnormalities and non-alcoholic fatty liver disease in exposed populations.</p>
+  </div>
+  <div class="effect-card">
+   <span class="effect-icon">🤰</span>
+   <span class="severity">High Risk</span>
+   <h3>Reproductive Harm</h3>
+   <p>PFAS exposure has been linked to reduced fertility, pregnancy-induced hypertension, and preeclampsia, with effects documented in both men and women.</p>
+  </div>
+ </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" style="background:#fff;">
+ <div class="section-label">03 A History of Negligence</div>
+ <h2>Decades of Delay</h2>
+ <p style="max-width:65ch;">The story of PFAS is not just a scientific story it is a story of corporate secrecy, regulatory failure, and communities left without answers for generations.</p>
+
+ <div class="timeline">
+  <div class="timeline-item">
+   <div class="timeline-year">1940s</div>
+   <h3>PFAS Introduced</h3>
+   <p>3M and DuPont begin manufacturing PFAS compounds for industrial and consumer use. Their unique properties make them commercially valuable almost immediately.</p>
+  </div>
+  <div class="timeline-item danger-event">
+   <div class="timeline-year">1970s–1980s</div>
+   <h3>Internal Studies Show Harm</h3>
+   <p>Internal corporate studies begin documenting health risks of PFAS exposure in workers. These findings are not shared with regulators or the public for decades.</p>
+  </div>
+  <div class="timeline-item danger-event">
+   <div class="timeline-year">~2000</div>
+   <h3>Kimberly-Clark Allegedly Aware in New Milford, CT</h3>
+   <p>Kimberly-Clark is alleged to have known about PFAS dangers from its New Milford facility by at least this year, yet took no meaningful action to address contamination affecting nearby residents.</p>
+  </div>
+  <div class="timeline-item">
+   <div class="timeline-year">2012</div>
+   <h3>Landmark JAMA Study Published</h3>
+   <p>A study in the Journal of the American Medical Association demonstrates that PFAS exposure in children significantly weakens immune responses to vaccines even at levels common in the general population.</p>
+  </div>
+  <div class="timeline-item">
+   <div class="timeline-year">2016</div>
+   <h3>EPA Issues Health Advisories</h3>
+   <p>The EPA issues non-enforceable health advisory levels for PFOA and PFOS but stops short of legally binding limits, leaving communities without enforceable protections.</p>
+  </div>
+  <div class="timeline-item danger-event">
+   <div class="timeline-year">2024</div>
+   <h3>First Federal Drinking Water Limits Finally</h3>
+   <p>The EPA finalizes the first-ever National Primary Drinking Water Regulation for PFAS, setting a maximum contaminant level of 4 parts per trillion for PFOS and PFOA. Communities had been unprotected for over 80 years of industrial use.</p>
+  </div>
+  <div class="timeline-item">
+   <div class="timeline-year">2025</div>
+   <h3>No Proven Cleanup Solution Exists</h3>
+   <p>A comprehensive review of 581 peer-reviewed studies concludes that despite progress in treatment technologies, no single proven solution exists to fully eliminate PFAS contamination from water systems.</p>
+  </div>
+ </div>
+</section>
+
+<!-- LOCAL CASE STUDY -->
+<section id="local" class="case-study">
+ <div class="section-label">04 Local Crisis</div>
+ <div class="case-study-inner">
+  <div>
+   <h2>New Milford, CT: A Community at Risk</h2>
+   <p>The PFAS crisis is not distant. In New Milford, Connecticut, residents living near a Kimberly-Clark facility have faced the consequences of alleged corporate negligence and decades of regulatory inaction.</p>
+   <div class="pullquote">
+    "Kimberly-Clark allegedly knew about the dangers of PFAS by at least 2000 and took no action to deal with it leaving a community exposed for nearly a quarter century."
+   </div>
+   <p>PFAS from industrial operations can migrate through soil and into groundwater, contaminating the drinking water of residents who may have no idea the risk exists. Because PFAS are colorless and odorless, there is no way to detect them without laboratory testing.</p>
+   <p>The New Milford case is a local example of a national pattern: industries using PFAS-containing products near communities, with slow regulatory response and real health consequences for residents who trusted their water was safe.</p>
+   <p>Residents have the right to know what is in their water. The combination of alleged corporate concealment and the EPA's delayed regulatory action created a situation where that right was denied for decades.</p>
+  </div>
+  <div class="case-stat-stack">
+   <div class="case-stat">
+    <span class="case-stat-num">~25</span>
+    <span class="case-stat-desc">Years Kimberly-Clark allegedly knew before meaningful action</span>
+   </div>
+   <div class="case-stat">
+    <span class="case-stat-num">80+</span>
+    <span class="case-stat-desc">Years of industrial PFAS use before federal drinking water limits</span>
+   </div>
+   <div class="case-stat">
+    <span class="case-stat-num">0</span>
+    <span class="case-stat-desc">Proven technologies to fully eliminate PFAS from contaminated water (as of 2025)</span>
+   </div>
+   <div class="case-stat">
+    <span class="case-stat-num">4 ppt</span>
+    <span class="case-stat-desc">EPA safe limit equivalent to 4 drops in an Olympic swimming pool</span>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section id="solutions">
+ <div class="section-label">05 What Can Be Done</div>
+ <h2>Addressing the PFAS Crisis</h2>
+ <p style="max-width:65ch;">While no great solution exists, researchers, regulators, and communities are pursuing multiple approaches to reduce exposure and begin remediation.</p>
+
+ <div class="solutions-grid">
+  <div class="solution-card">
+   <h3>Activated Carbon Filtration</h3>
+   <p>Activated carbon is the EPA's "Best Available Technology" for PFAS removal. It is effective at reducing PFOS and PFOA in drinking water, though less effective for shorter-chain PFAS and is impacted by competing organic matter.</p>
+  </div>
+  <div class="solution-card">
+   <h3>Regulatory Enforcement</h3>
+   <p>The 2024 EPA drinking water rule gives regulators enforceable limits for the first time. Compliance deadlines require water utilities to test for PFAS and take action if levels exceed 4 ppt.</p>
+  </div>
+  <div class="solution-card">
+   <h3>Community Testing & Awareness</h3>
+   <p>Residents near industrial sites can request water testing. Organizations like the Environmental Working Group maintain public maps of known PFAS contamination sites across the U.S.</p>
+  </div>
+  <div class="solution-card">
+   <h3>Corporate Accountability</h3>
+   <p>Legal action against manufacturers like 3M and DuPont has resulted in multi-billion dollar settlements. Ongoing litigation continues to push for cleanup funding and accountability.</p>
+  </div>
+ </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources" style="background:#fff;">
+ <div class="section-label">06 Sources</div>
+ <h2>Works Cited</h2>
+ <p style="max-width:65ch; margin-bottom:1rem;">All sources are peer-reviewed academic literature or established scientific publishing platforms.</p>
+
+ <ul class="sources-list">
+  <li>
+   <span class="source-tag">Peer Reviewed</span>
+   Alzghoul, Tharaa, et al. "PFAS Contamination and Mitigation: A Comprehensive Analysis of Research Trends and Global Contributions." <em>ScienceDirect</em>, 2025. sciencedirect.com/science/article/pii/S2666016425000349
+  </li>
+  <li>
+   <span class="source-tag">JAMA</span>
+   Grandjean, Philippe, et al. "Serum Vaccine Antibody Concentrations in Children Exposed to Perfluorinated Compounds." <em>JAMA</em>, vol. 307, no. 4, 2012, pp. 391–397. jamanetwork.com/journals/jama/fullarticle/1149703
+  </li>
+  <li>
+   <span class="source-tag">Peer Reviewed</span>
+   Meservey, Alexis, et al. "Competitive Adsorption of PFAS on Activated Carbon." <em>ScienceDirect</em>, 2025.
+  </li>
+  <li>
+   <span class="source-tag">PMC</span>
+   "Per- and Poly-fluoroalkyl Substances (PFAS) Exposure and Risk of Kidney, Liver, and Testicular Cancers: A Systematic Review and Meta-Analysis." <em>PubMed Central</em>.
+  </li>
+  <li>
+   <span class="source-tag">ACS</span>
+   "Factors Influencing Concentrations of PFAS in Drinking Water: Implications for Human Exposure." <em>ACS ES&T Water</em>.
+  </li>
+  <li>
+   <span class="source-tag">Wiley</span>
+   Gaines, et al. "Historical and Current Usage of Per- and Polyfluoroalkyl Substances (PFAS): A Literature Review." <em>American Journal of Industrial Medicine</em>, 2023.
+  </li>
+ </ul>
+</section>
+
+<footer>
+ <div>Created by <span>Riley Greene</span> · PFAS Awareness Project · <span>2025</span></div>
+ <div style="margin-top:0.5rem;">For academic and educational purposes.</div>
+</footer>
+
+</body>
+</html>
